@@ -45,17 +45,17 @@ for name in "${modules[@]}"; do
     echo "missing $src" >&2
     exit 1
   }
-  # Refuse world/group-writable sources (defense in depth even with copy-on-install).
+  # Refuse group/world-writable sources (octal write bits 0022).
   mode="$(stat -c '%a' "$src")"
   owner="$(stat -c '%u' "$src")"
   [[ $owner == "$(id -u)" ]] || {
     echo "refusing non-owned source: $src" >&2
     exit 1
   }
-  [[ $mode != *[2367]* ]] || {
+  if (( (8#$mode & 8#022) != 0 )); then
     echo "refusing group/world-writable source: $src (mode $mode)" >&2
     exit 1
-  }
+  fi
 done
 
 [[ -f $bindings_file || -L $bindings_file ]] || {
