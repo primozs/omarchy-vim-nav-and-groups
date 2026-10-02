@@ -20,7 +20,7 @@ Unlike a plain hjkl remap, focus and swap behave correctly when windows are tabb
 | `Super+Shift+l` / `Super+Shift+Right` | Swap/join right; in a multi-tab group, reorder tab right (eject at right edge) |
 | `Super+Shift+k` / `Super+Shift+Up` | Swap up; in a multi-tab group, eject active tab **above** the group |
 | `Super+Shift+j` / `Super+Shift+Down` | Swap down; in a multi-tab group, eject active tab **below** the group |
-| `Super+G` | Toggle: fold every window on this workspace into one group, or dissolve every multi-tab group on it |
+| `Super+G` | Toggle: fold every window on this workspace into one group, or dissolve every group on it (including lone toggled groups once any multi-tab group is present) |
 | `Super+Shift+1..0` | Eject active tab if needed, move that window to workspace, **stay here** |
 | `Super+Shift+Alt+1..0` | Same, but **follow** the window |
 
@@ -48,7 +48,7 @@ Applied automatically (theme colors from `~/.local/state/omarchy/current/theme/c
 | Active tab text | white | theme darker background |
 | Inactive tab text | translucent white | theme foreground |
 | `gradients` | `true` | `true` (required — otherwise tab fills do not draw) |
-| Tab height | 22 | 25 |
+| Tab height | 22 | 22 (match stock) |
 | `gaps_in` / indicator | 5 / height 1 | 0 / height 0 |
 | Window opacity | ~0.985 / 0.96 (wallpaper bleeds through tabs) | `1.0 1.0` |
 | Window animations | on | off (instant group/move; menus/OSD untouched) |
@@ -60,7 +60,7 @@ Applied automatically (theme colors from `~/.local/state/omarchy/current/theme/c
 ```sh
 git clone https://github.com/primozs/omarchy-vim-nav-and-groups.git
 cd omarchy-vim-nav-and-groups
-./check.sh    # optional smoke: luac, bash -n, omarchy plugin validate
+./check.sh    # optional smoke: luac, bash -n, omarchy plugin validate, install safety
 ./install.sh
 ```
 
@@ -68,9 +68,20 @@ That:
 
 1. **Copies** `nav_and_groups.lua` and `group_looknfeel.lua` into `~/.config/hypr/` (mode `644`; backs up collisions)
 2. Appends a managed `require("hypr.nav_and_groups")` to `~/.config/hypr/bindings.lua` (follows Chezmoi symlinks; backs up first)
-3. Reloads Hyprland and checks for config errors — on failure, rolls the install back
+3. Reloads Hyprland and checks for config errors — on any failure after writes (reload or config errors), rolls the install back
 
-Remove with `./uninstall.sh` (edits bindings in place so a Chezmoi symlink stays intact).
+Remove with `./uninstall.sh` (backs up bindings/modules first, edits bindings in place so a Chezmoi symlink stays intact, rolls back if reload/config validation fails).
+
+### Manual smoke (after install)
+
+With a few tiled windows on one workspace:
+
+1. `Super+h/l/j/k` — focus neighbors; inside a multi-tab group, cycle tabs; `h`/`l` leave the group at the edges
+2. `Super+Shift+h/l` — reorder tabs mid-group; eject at the edges
+3. `Super+Shift+j/k` — eject active tab below / above the group
+4. `Super+G` — fold all windows into one group; press again to dissolve
+5. `Super+Shift+2` — move active window to workspace 2 and stay; `Super+Shift+Alt+2` — follow it
+6. Confirm group tabs use theme colors and are opaque (no wallpaper bleed)
 
 ### Future: Omarchy Hyprland plugins
 
