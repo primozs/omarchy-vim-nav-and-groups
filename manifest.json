@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "id": "primozs.vim-nav-and-groups",
+  "name": "Vim nav and window groups",
+  "version": "1.0.0",
+  "author": "Primoz Susa",
+  "license": "MIT",
+  "description": "Vim-style Super+hjkl focus/swap that understands Hyprland tab groups, Super+G workspace fold, and theme-colored opaque group tabs.",
+  "kinds": ["hyprland"],
+  "entryPoints": {
+    "hyprland": "nav_and_groups.lua"
+  },
+  "priority": 100,
+  "dependencies": []
+}
