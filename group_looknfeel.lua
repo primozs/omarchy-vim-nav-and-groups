@@ -78,8 +78,8 @@ hl.config({
 
       font_family = "monospace",
       font_size = 12,
-      -- height 25: a bit taller than Omarchy default 22 for tab labels.
-      height = 25,
+      -- Match Omarchy stock tab height.
+      height = 22,
       -- indicator_height 0: the 1px underline was showing wallpaper through.
       indicator_height = 0,
       text_padding = 5,
