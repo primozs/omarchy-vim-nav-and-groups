@@ -88,6 +88,13 @@ local function nav(key)
   end
 end
 
+-- Eject from group in a direction. Preselect so dwindle honors u/d as a
+-- horizontal (top/bottom) split — otherwise force_split + wide boxes side-split.
+local function eject(dir)
+  dispatch(hl.dsp.layout("preselect " .. dir))
+  dispatch(hl.dsp.window.move({ out_of_group = dir }))
+end
+
 --- Move/swap: reorder or eject tabs; otherwise join a neighbor group or swap.
 local function move(key)
   local d = DIRS[key]
@@ -102,9 +109,9 @@ local function move(key)
     if key == "h" or key == "l" then
       local idx = g.current_index
       if key == "h" and idx == 1 then
-        dispatch(hl.dsp.window.move({ out_of_group = "l" }))
+        eject("l")
       elseif key == "l" and idx == g.size then
-        dispatch(hl.dsp.window.move({ out_of_group = "r" }))
+        eject("r")
       elseif key == "h" then
         dispatch(hl.dsp.group.move_window({ forward = false }))
       else
@@ -113,7 +120,8 @@ local function move(key)
       return
     end
 
-    dispatch(hl.dsp.window.move({ into_group = d.focus }))
+    -- j/k: pull this tab out below / above the group.
+    eject(d.focus)
     return
   end
 
@@ -234,12 +242,12 @@ end
 local nav_keys = {
   { key = "H", dir = "h", nav = "Focus left / previous tab / exit tabs", move = "Swap/join left / reorder or eject tab" },
   { key = "L", dir = "l", nav = "Focus right / next tab / exit tabs", move = "Swap/join right / reorder or eject tab" },
-  { key = "K", dir = "k", nav = "Focus up / previous tab", move = "Swap up / into tabs" },
-  { key = "J", dir = "j", nav = "Focus down / next tab", move = "Swap down / into tabs" },
+  { key = "K", dir = "k", nav = "Focus up / previous tab", move = "Swap up / eject tab above group" },
+  { key = "J", dir = "j", nav = "Focus down / next tab", move = "Swap down / eject tab below group" },
   { key = "LEFT", dir = "h", nav = "Focus left / previous tab / exit tabs", move = "Swap/join left / reorder or eject tab" },
   { key = "RIGHT", dir = "l", nav = "Focus right / next tab / exit tabs", move = "Swap/join right / reorder or eject tab" },
-  { key = "UP", dir = "k", nav = "Focus up / previous tab", move = "Swap up / into tabs" },
-  { key = "DOWN", dir = "j", nav = "Focus down / next tab", move = "Swap down / into tabs" },
+  { key = "UP", dir = "k", nav = "Focus up / previous tab", move = "Swap up / eject tab above group" },
+  { key = "DOWN", dir = "j", nav = "Focus down / next tab", move = "Swap down / eject tab below group" },
 }
 
 for _, item in ipairs(nav_keys) do

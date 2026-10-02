@@ -18,8 +18,8 @@ Unlike a plain hjkl remap, focus and swap behave correctly when windows are tabb
 | `Super+j` / `Super+Down` | Focus down; in a multi-tab group, next tab |
 | `Super+Shift+h` / `Super+Shift+Left` | Swap/join left; in a multi-tab group, reorder tab left (eject at left edge) |
 | `Super+Shift+l` / `Super+Shift+Right` | Swap/join right; in a multi-tab group, reorder tab right (eject at right edge) |
-| `Super+Shift+k` / `Super+Shift+Up` | Swap up; in a multi-tab group, move into group above |
-| `Super+Shift+j` / `Super+Shift+Down` | Swap down; in a multi-tab group, move into group below |
+| `Super+Shift+k` / `Super+Shift+Up` | Swap up; in a multi-tab group, eject active tab **above** the group |
+| `Super+Shift+j` / `Super+Shift+Down` | Swap down; in a multi-tab group, eject active tab **below** the group |
 | `Super+G` | Toggle: fold every window on this workspace into one group, or dissolve every multi-tab group on it |
 | `Super+Shift+1..0` | Eject active tab if needed, move that window to workspace, **stay here** |
 | `Super+Shift+Alt+1..0` | Same, but **follow** the window |
